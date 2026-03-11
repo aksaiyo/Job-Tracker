@@ -166,7 +166,7 @@ SELECT * FROM (VALUES
     NULL,
     'Bookmarked',
     'Medium',
-    'Saw this on LinkedIn. Need to research the team more before applying.'
+    'Saw this on LinkedIn. Need to research the team more and schedule coffee chats before applying.'
   ),
   (
     'Airbnb',
