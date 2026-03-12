@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
+import { Loader2, DollarSign } from "lucide-react";
 
 interface EditProspectFormProps {
   prospect: Prospect;
@@ -42,6 +42,7 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
       status: prospect.status as InsertProspect["status"],
       interestLevel: prospect.interestLevel as InsertProspect["interestLevel"],
       notes: prospect.notes ?? "",
+      targetSalary: prospect.targetSalary ?? null,
     },
   });
 
@@ -103,6 +104,34 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
                   value={field.value ?? ""}
                   data-testid="input-edit-job-url"
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="targetSalary"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Target Salary (optional)</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                  <Input
+                    type="number"
+                    min={1}
+                    step={1}
+                    placeholder="120000"
+                    className="pl-7"
+                    data-testid="input-edit-target-salary"
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(e.target.value === "" ? null : e.target.valueAsNumber)
+                    }
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
