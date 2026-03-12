@@ -17,6 +17,7 @@ const makeProspect = (id: number, interestLevel: string): Prospect => ({
   interestLevel,
   notes: null,
   targetSalary: null,
+  followUpDate: null,
   createdAt: new Date(),
 });
 

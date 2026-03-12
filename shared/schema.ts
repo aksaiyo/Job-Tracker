@@ -23,6 +23,7 @@ export const prospects = pgTable("prospects", {
   interestLevel: text("interest_level").notNull().default("Medium"),
   notes: text("notes"),
   targetSalary: integer("target_salary"),
+  followUpDate: text("follow_up_date"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -39,6 +40,15 @@ export const insertProspectSchema = createInsertSchema(prospects).omit({
   targetSalary: z.preprocess(
     (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
     z.number().int().positive("Salary must be a positive whole number").nullable().optional(),
+  ),
+  followUpDate: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? null : v),
+    z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Follow-up date must be in YYYY-MM-DD format")
+      .refine((s) => !isNaN(new Date(s + "T00:00:00").getTime()), "Invalid follow-up date")
+      .nullable()
+      .optional(),
   ),
 });
 

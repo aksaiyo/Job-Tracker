@@ -46,6 +46,14 @@ export function validateProspect(data: Record<string, unknown>): { valid: boolea
     }
   }
 
+  if (data.followUpDate !== undefined && data.followUpDate !== null) {
+    if (typeof data.followUpDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data.followUpDate)) {
+      errors.push("Follow-up date must be in YYYY-MM-DD format");
+    } else if (isNaN(new Date(data.followUpDate + "T00:00:00").getTime())) {
+      errors.push("Invalid follow-up date");
+    }
+  }
+
   return { valid: errors.length === 0, errors };
 }
 
