@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Prospect } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus, DollarSign } from "lucide-react";
+import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus, DollarSign, CalendarClock } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -115,6 +115,34 @@ export function ProspectCard({ prospect }: { prospect: Prospect }) {
             </span>
           )}
         </div>
+
+        {prospect.followUpDate && (() => {
+          const today = new Date().toISOString().split("T")[0];
+          const isOverdue = prospect.followUpDate < today;
+          const [y, m, d] = prospect.followUpDate.split("-").map(Number);
+          const formatted = new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            timeZone: "UTC",
+          });
+          return (
+            <div
+              className={[
+                "inline-flex items-center gap-1 text-xs font-medium rounded px-1.5 py-0.5 w-fit",
+                isOverdue
+                  ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+                  : "bg-muted text-muted-foreground",
+              ].join(" ")}
+              data-testid={`follow-up-date-${prospect.id}`}
+              data-overdue={isOverdue ? "true" : "false"}
+            >
+              <CalendarClock className="w-3 h-3 shrink-0" />
+              <span>{formatted}</span>
+              {isOverdue && <span className="font-semibold">· Overdue</span>}
+            </div>
+          );
+        })()}
 
         {prospect.jobUrl && (
           <a

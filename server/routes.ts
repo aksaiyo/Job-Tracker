@@ -39,6 +39,13 @@ export async function registerRoutes(
     if (body.roleTitle !== undefined) updates.roleTitle = body.roleTitle;
     if (body.jobUrl !== undefined) updates.jobUrl = body.jobUrl;
     if (body.notes !== undefined) updates.notes = body.notes;
+    if (body.followUpDate !== undefined) {
+      const date = body.followUpDate === null || body.followUpDate === "" ? null : String(body.followUpDate);
+      if (date !== null && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return res.status(400).json({ message: "Follow-up date must be in YYYY-MM-DD format" });
+      }
+      updates.followUpDate = date;
+    }
     if (body.targetSalary !== undefined) {
       const salary = body.targetSalary === null ? null : Number(body.targetSalary);
       if (salary !== null && (!Number.isInteger(salary) || salary <= 0)) {
