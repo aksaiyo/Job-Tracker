@@ -39,6 +39,13 @@ export async function registerRoutes(
     if (body.roleTitle !== undefined) updates.roleTitle = body.roleTitle;
     if (body.jobUrl !== undefined) updates.jobUrl = body.jobUrl;
     if (body.notes !== undefined) updates.notes = body.notes;
+    if (body.targetSalary !== undefined) {
+      const salary = body.targetSalary === null ? null : Number(body.targetSalary);
+      if (salary !== null && (!Number.isInteger(salary) || salary <= 0)) {
+        return res.status(400).json({ message: "Salary must be a positive whole number" });
+      }
+      updates.targetSalary = salary;
+    }
 
     if (body.status !== undefined) {
       if (!STATUSES.includes(body.status)) {

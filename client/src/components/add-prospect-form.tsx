@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
+import { Loader2, DollarSign } from "lucide-react";
 
 export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
   const { toast } = useToast();
@@ -37,6 +37,7 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
       status: "Bookmarked",
       interestLevel: "Medium",
       notes: "",
+      targetSalary: null,
     },
   });
 
@@ -99,6 +100,34 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
                   value={field.value ?? ""}
                   data-testid="input-job-url"
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="targetSalary"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Target Salary (optional)</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                  <Input
+                    type="number"
+                    min={1}
+                    step={1}
+                    placeholder="120000"
+                    className="pl-7"
+                    data-testid="input-target-salary"
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(e.target.value === "" ? null : e.target.valueAsNumber)
+                    }
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
